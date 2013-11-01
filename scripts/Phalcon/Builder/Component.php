@@ -52,6 +52,30 @@ abstract class Component
 	 */
 	protected function _getConfig($path)
 	{
+        // use configuration from script parameters
+        // merge all configs together
+        $forcedConfig = $this->_options["config"];
+        if (NULL !== $forcedConfig) {
+            $forcedConfig = explode(",", $forcedConfig);
+
+            $mergedConfig = new \Phalcon\Config();
+            foreach ($forcedConfig as $config) {
+                // use "INI" configs
+                if (preg_match("#\.ini$#i", $config)) {
+                    $mergedConfig->merge(new \Phalcon\Config\Adapter\Ini($config));
+                }
+
+                // use "PHP" configs
+                else if (preg_match("#\.php$#i", $config)){
+                    $mergedConfig->merge(include($config));
+                }
+
+
+            }
+
+            return $mergedConfig;
+        }
+
 		foreach (array('app/config/', 'config/') as $configPath) {
 			if (file_exists($path . $configPath . "config.ini")) {
 				return new \Phalcon\Config\Adapter\Ini($path . $configPath . "/config.ini");

@@ -53,6 +53,7 @@ class Model extends Command implements CommandsInterface
 		'force'           => "Rewrite the model. [optional]",
 		'trace'           => "Shows the trace of the framework in case of exception. [optional]",
         'mapcolumn'       => 'Get some code for map columns. [optional]',
+        'config=l'        => 'Force configuration file(s). Comma separated list of config files to merge.'
 	);
 
 	public function run($parameters)
@@ -79,6 +80,7 @@ class Model extends Command implements CommandsInterface
                 'excludeFields'     => $this->getOption('excludefields'),
                 'force'             => $this->isReceivedOption('force'),
                 'mapColumn'         => $this->isReceivedOption('mapcolumn'),
+                'config'            => $this->getOption('config')
 		    )
         );
 
